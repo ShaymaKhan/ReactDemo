@@ -1,22 +1,117 @@
 import React from 'react';
-import {View, StyleSheet, Text, Easing,TextInput, Animated,TouchableOpacity, Alert,ImageBackground,Keyboard,ActivityIndicator} from 'react-native'
-import Listing from '../Component/Listing'
+import {View, StyleSheet, Text,TextInput,TouchableOpacity, Alert,ImageBackground,Keyboard} from 'react-native'
 import LoadingIndicator from '../Component/LoadingIndic'
-import {setToken,setProfilePic} from '../actions/userActions'
+import Constants from '../Config/Constants';
+import { connect } from 'react-redux'
 
 
-export default class LoginAction extends React.Component
+
+class LoginAction extends React.Component
 {
+    
     constructor()
     {
-        super()
-        this.state={isLoading: false ,email: 'jm1@example.com', password:'jay@123',isLoading: false,accessToken:null}
-
+        super();
+        this.state={
+        email: "jm1@example.com", 
+        password:"jay@123",
+        token: null}
     }
+    onLogin = () =>{
+        Keyboard.dismiss()
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+        if(this.state.email == '')
+        {
+            Alert.alert('React Native', 'Please Enter Email',[{
+                text: 'Close',
+                style: 'cancel'
+            }])
+        }
+        else if(this.state.password == '')
+        {
+            Alert.alert('React Native', 'Please Enter Password',[{
+                text: 'Close',
+                style: 'cancel'
+            }])
+        }
+        else if(reg.test(this.state.email) == false)
+        {
+            Alert.alert('React Native', 'Please Enter Valid Email',[{
+                text: 'Close',
+                style: 'cancel'
+            }])
+        }
+        else{
+        this.setState({isLoading: true});
+        fetch("http://35.160.197.175:3006/api/v1/user/login",
+        {
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email : this.state.email,
+                password : this.state.password
+            })
+        }).then((response) => {
+            if(response.status == 200){
+                return response.json()
+            } else if(response.status == 400){
+                Alert.alert('React Native','Invalid Credential!!',[{
+                    text:'Close',
+                    style: 'cancel'
+                }])
+                return
+            } else{
+                Alert.alert('React Native','Login Fail!!',[{
+                    text:'Close',
+                    style: 'cancel'
+                }])
+            }
+            this.setState({isLoading: false})
+        }).then((responseJSON) => {
+            console.log(responseJSON);
+            this.setState({isLoading:false});
+            if (responseJSON != null) {
+                // this.setState({accessToken: responseJSON.token})
+                // this.storeData(responseJSON).then( () => {
+                //     this.props.navigation.navigate('Listing')
+                // })
+                console.log(responseJSON.token);
+                this.props.token(responseJSON.token);
+                this.props.navigation.navigate("Listing");
+                Alert.alert('React Native','Login Successfully!!',[{
+                    text:'Close',
+                    style: 'cancel'
+                }]
+                )
+            }
+        }).catch((error) => {
+            this.setState({isLoading: false})
+            console.log('===========');
+            console.log(error);
+            console.log('=======');
+            
+            
+            
+        })
+    }
+}
+    // componentDidMount = async() => {
+    //     console.disableYellowBox = true;
+    //     const login = await AsyncStorage.getItem('token');
+
+    //     if (login !== null) {
+    //         this.props.update(login)
+    //         console.log('under condition ' + login);
+    //         const { navigate } = this.props.navigation;
+    //         navigate('HomeNavigator');
+    //     }
+    // }
     
     render()
     {
-        if(this.state.accessToken == null){
+        // if(this.state.accessToken == null){
         return <View style={styles.container}>
             <ImageBackground source={require("../assets/login1.jpg")}
             style={{
@@ -55,87 +150,46 @@ export default class LoginAction extends React.Component
         <View style={styles.bottomView}>
         </View>
         </View>
-        }else{
-            return <View style={[styles.listContainer,styles.shadow]}>
-                <Listing token={this.state.accessToken}></Listing>
-            </View>
-        }
+        // }else{
+        //     return <View style={[styles.listContainer,styles.shadow]}>
+        //         <Listing token={this.state.accessToken}></Listing>
+        //     </View>
+        // }
     }
-    onLogin = () =>{
-        Keyboard.dismiss()
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
-        if(this.state.email == '')
-        {
-            Alert.alert('React Native', 'Please Enter Email',[{
-                text: 'Close',
-                style: 'cancel'
-            }])
-        }
-        else if(this.state.password == '')
-        {
-            Alert.alert('React Native', 'Please Enter Password',[{
-                text: 'Close',
-                style: 'cancel'
-            }])
-        }
-        else if(reg.test(this.state.email) == false)
-        {
-            Alert.alert('React Native', 'Please Enter Valid Email',[{
-                text: 'Close',
-                style: 'cancel'
-            }])
-        }
-        else{
-        this.setState({isLoading: true})
-        fetch('http://35.160.197.175:3006/api/v1/user/login',
-        {
-            method: 'POST',
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'email': this.state.email,
-                'password': this.state.password
-            })
-        }).then((response) => {
-            if(response.status == 200){
-                return response.json()
-            } else if(response.status == 400){
-                Alert.alert('React Native','Invalid Credential!!',[{
-                    text:'Close',
-                    style: 'cancel'
-                }])
-                return
-            } else{
-                Alert.alert('React Native','Login Fail!!',[{
-                    text:'Close',
-                    style: 'cancel'
-                }])
-            }
-            this.setState({isLoading: false})
-        }).then((responseJSON) => {
-            console.log(responseJSON);
-            if (responseJSON != null) {
-                this.setState({accessToken: responseJSON.token})
-                Alert.alert('React Native','Login Successfully!!',[{
-                    text:'Close',
-                    style: 'cancel'
-                }]
-                )
-            }
-        }).catch((error) => {
-            this.setState({isLoading: false})
-            console.log('===========');
-            console.log(error);
-            console.log('=======');
-            
-            
-            
-        })
-    }
+
+//     storeData = async (responseJSON) => {
+
+//         try {
+//             let token = '';
+//             token = responseJSON.token;
+//             this.props.update(token)
+//             console.log('token check' + token);
+//             await AsyncStorage.setItem('token', token)
+//         } catch (e) {
+//             console.log('error' + e);
+//         }
+//     }
 }
 
-}
+function mapDispatchToProps(dispatch) {
+    return {
+      token: value =>
+        dispatch({
+          type: "Token",
+          token: value
+        })
+    };
+  }
+  
+  const mapStatetoProps = state => {
+    return {
+      token: state.token
+    };
+  };
+  
+  export default connect(mapStatetoProps, mapDispatchToProps)(LoginAction);
+
+
 
 const styles = StyleSheet.create({
     listContainer:{
