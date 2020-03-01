@@ -26,7 +26,7 @@ onError = (error) =>{
 }
 render() {
     return (
-        <View style={{ height:300}}>
+        <View style={{ flex:1}}>
             {/* <Text style={{alignSelf: 'center', fontSize: 19, margin:10}}>Map View</Text> */}
             <MapView initialRegion={{
                     latitude: 23.0588416,
@@ -34,7 +34,7 @@ render() {
                     latitudeDelta: 0.1,
                     longitudeDelta: 0.1
                 }}
-                style={{ height: 300 }}
+                style={{ flex:1 }}
             >
            
                 <Marker
