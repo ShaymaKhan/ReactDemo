@@ -69,20 +69,3 @@ export default function App() {
     <AppContainer />
   </Provider>)
 }
-
-// RecipeDetail: {
-//   screen: RecipeDetails,
-//   navigationOptions: {
-//     headerTintColor: 'white',
-//     headerTransparent: true,
-//     tabBarLabel: 'Details'
-//   }
-// },
-// AddRecipe: {
-//   screen: AddRecipe,
-//   navigationOptions: {
-//     headerTintColor: 'white',
-//     headerTransparent: true,
-//     tabBarLabel: 'Add Recipe'
-//   }
-// },

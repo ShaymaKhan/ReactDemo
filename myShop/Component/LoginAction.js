@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text,TextInput,TouchableOpacity, Alert,ImageBackground,Keyboard} from 'react-native'
 import LoadingIndicator from '../Component/LoadingIndic'
-import Constants from '../Config/Constants';
+// import Constants from '../Config/Constants';
 import { connect } from 'react-redux'
 
 

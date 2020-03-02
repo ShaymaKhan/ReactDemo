@@ -284,36 +284,3 @@ const mapStateToProps = state => {
   export default connect(mapStateToProps)(Listing);
 
     
-//             renderItem= {({item }) => 
-//             {
-//                 return <View style={[styles.recipeCell,styles.shadow]}>
-//                         <TouchableWithoutFeedback style={styles.container}>
-//                         <ImageBackground source={this.getImageUrl(item.photo)} style={styles.recipeImage} imageStyle={{borderRadius:10}}>
-//                         <View style={styles.recipeBottomView}>
-//                         </View>
-//                         <View style={styles. recipeCenterView}>
-//                             <Text style={[styles.allText, styles.recipeMadeBy]}>Recipe Made By{item.firstName +' '+ item.lastName}</Text>
-//                             <Text style={[styles.allText, styles.recipeMadeBy, {fontSize: 15}]}>Serves: {item.Serves}</Text>
-//                             <Text style={[styles.allText, styles.recipeMadeBy]}>Complexity level :{item.complexity}</Text>
-//                         </View>
-//                         <View style={styles.recipeTopView}>
-//                             <Text style={[styles.shadow, styles.allText,styles.recipeTitle]}>{item.name}</Text>
-//                         </View>
-//                         </ImageBackground>
-//                         </TouchableWithoutFeedback>
-//                         </View>
-//             }
-//         }
-//                keyExtractor={(item) => item.id}>
-//     );
-// }
-// getImageUrl(url){
-//     console.log(url);
-//     if(url == null){
-//         return require('../assets/noData.jpg')
-//     } else{
-//         return { uri: url}
-//     }
-    
-// }
-

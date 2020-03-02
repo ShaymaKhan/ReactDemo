@@ -49,7 +49,7 @@ class AddRecipe extends Component {
   getImagePermissions = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== "granted") {
-      alert("Sorry, we need camera roll permissions to make this work!");
+      alert("Please allow camera permission");
     } else {
       this.clickedOnImage();
     }
